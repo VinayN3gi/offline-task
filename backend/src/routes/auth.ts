@@ -13,13 +13,16 @@ interface SignUpBody{
 }
 
 
+interface LoginBody{
+    email:string,
+    password:string
+}
+
 authRouter.post("/signup",async(req :Request<{},{},SignUpBody>,res:Response)=>{
     try{
         //Extracting name,email and password parameters from req body
         const {name,email,password} = req.body
         
-
-
         //Checking if users already exist or not
         const fetchedUser = await db.select().from(users).where(eq(users.email,email))
         
@@ -42,8 +45,6 @@ authRouter.post("/signup",async(req :Request<{},{},SignUpBody>,res:Response)=>{
        const [user]= await db.insert(users).values(newUser).returning()
        res.status(201).json(user)
 
-        
-        
     }
     catch(e)
     {
@@ -51,7 +52,32 @@ authRouter.post("/signup",async(req :Request<{},{},SignUpBody>,res:Response)=>{
     }
 })
 
-authRouter.get("/",(req,res)=>{
+authRouter.get("/login",async (req:Request<{},{},LoginBody>,res:Response)=>{
+
+    try{
+    const {email,password} = req.body
+    const [existingUser] = await db.select().from(users).where(eq(users.email,email))
+        
+    if(!existingUser)
+    {
+        res.status(400).send({msg:"The user does not exist"})
+        return;
+    }
+
+    const matching=await bcryptjs.compare(password,existingUser.password)
+
+    if(!matching)
+    {
+        res.status(400).send({msg:"Invalid credintials"})
+        return;
+    }
+
+    res.json(existingUser)
+    }
+    catch(e)
+    {
+        res.status(500).send({error:e})
+    }
 
 })
 
