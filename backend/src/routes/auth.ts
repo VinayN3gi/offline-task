@@ -23,6 +23,7 @@ interface LoginBody{
     password:string
 }
 
+
 authRouter.post("/signup",async(req :Request<{},{},SignUpBody>,res:Response)=>{
     try{
         //Extracting name,email and password parameters from req body
@@ -92,6 +93,53 @@ authRouter.get("/login",async (req:Request<{},{},LoginBody>,res:Response)=>{
         res.status(500).send({error:e})
     }
 
+})
+
+
+authRouter.post("/validToken",async(req:Request,res:Response)=>{
+    try 
+    {
+        //get the header : jwt token will be in the header
+        const token=req.header("x-auth-token");
+        if(!token)
+        {
+                
+            res.json(false);
+            return;
+        } 
+            
+        //verify the token
+        if(!process.env.JWT_SECRET)
+        {
+            throw new Error("JWT_SECRET is not defined in environment variables");
+        }
+
+        const verified=jwt.verify(token,process.env.JWT_SECRET)
+
+        if(!verified)
+        {
+            res.json(false)
+            return;
+        }
+
+        //getting the verified token
+        const verifiedToken=verified as {id:string};
+        
+        //fetch the user depending on the id 
+        const [user] = await db.select().from(users).where(eq(users.id,verifiedToken.id))
+
+        if(!user)
+        {
+            res.json(false);
+            return;
+        }
+
+        res.send(user);
+
+    } 
+    catch (e) {
+        res.status(500).send({error:e})
+    }
 })
 
 export default authRouter
