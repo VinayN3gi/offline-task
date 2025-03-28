@@ -3,6 +3,11 @@ import { db } from '../db'
 import { NewUser, users } from '../db/schema'
 import { eq } from 'drizzle-orm'
 import bcryptjs from "bcryptjs"
+import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
+
+
+dotenv.config()
 
 const authRouter=Router()
 
@@ -55,24 +60,32 @@ authRouter.post("/signup",async(req :Request<{},{},SignUpBody>,res:Response)=>{
 authRouter.get("/login",async (req:Request<{},{},LoginBody>,res:Response)=>{
 
     try{
-    const {email,password} = req.body
-    const [existingUser] = await db.select().from(users).where(eq(users.email,email))
+        const {email,password} = req.body
+        const [existingUser] = await db.select().from(users).where(eq(users.email,email))
+            
+        if(!existingUser)
+        {
+            res.status(400).send({msg:"The user does not exist"})
+            return;
+        }
+
+        const matching=await bcryptjs.compare(password,existingUser.password)
+
+        if(!matching)
+        {
+            res.status(400).send({msg:"Invalid credintials"})
+            return;
+        }
+
+        if (!process.env.JWT_SECRET) {
+            throw new Error("JWT_SECRET is not defined in environment variables");
+        }
+
+        const token = jwt.sign({ id: existingUser.id }, process.env.JWT_SECRET);
+
+
+        res.json({token,...existingUser})
         
-    if(!existingUser)
-    {
-        res.status(400).send({msg:"The user does not exist"})
-        return;
-    }
-
-    const matching=await bcryptjs.compare(password,existingUser.password)
-
-    if(!matching)
-    {
-        res.status(400).send({msg:"Invalid credintials"})
-        return;
-    }
-
-    res.json(existingUser)
     }
     catch(e)
     {
