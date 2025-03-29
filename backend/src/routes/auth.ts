@@ -5,6 +5,7 @@ import { eq } from 'drizzle-orm'
 import bcryptjs from "bcryptjs"
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
+import { auth, AuthRequest } from '../middleware/auth'
 
 
 dotenv.config()
@@ -134,12 +135,17 @@ authRouter.post("/validToken",async(req:Request,res:Response)=>{
             return;
         }
 
-        res.send(user);
+        res.send(true);
 
     } 
     catch (e) {
-        res.status(500).send({error:e})
+        res.status(500).json(false)
     }
+})
+
+
+authRouter.get("/",auth,async(req : AuthRequest,res:Response)=>{
+        res.send(req.token);
 })
 
 export default authRouter
