@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_app/features/auth/cubit/auth_cubit.dart';
 import 'package:task_app/features/auth/pages/login_page.dart';
+import 'package:task_app/features/auth/pages/signup_page.dart';
 import 'package:task_app/theme/elevate_button_theme.dart';
 import 'package:task_app/theme/input_decoration_theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
             elevatedButtonTheme: customButtonTheme,
             useMaterial3: true,
           ),
-          home: const LoginPage()),
+          home: const SignupPage()),
     );
   }
 }

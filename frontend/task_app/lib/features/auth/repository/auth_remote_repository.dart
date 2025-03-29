@@ -13,7 +13,12 @@ class AuthRemoteRepository {
     try {
       final res = await http.post(
           Uri.parse('${Constants.backendUri}/auth/signup'),
-          headers: {'Content-Type': 'application/json'});
+          headers: {'Content-Type': 'application/json'},
+          body:jsonEncode({
+            'name':name,
+            'email':email,
+            'password':password
+          }));
 
       if (res.statusCode != 201) {
         throw jsonDecode(res.body)['msg'];
