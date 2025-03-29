@@ -145,7 +145,20 @@ authRouter.post("/validToken",async(req:Request,res:Response)=>{
 
 
 authRouter.get("/",auth,async(req : AuthRequest,res:Response)=>{
-        res.send(req.token);
+    try {
+        
+        if(!req.user)
+        {
+            res.status(401).json({msg:"User with the ide does not exist"});
+            return;
+        }
+        const [user]= await db.select().from(users).where(eq(users.id,req.user))
+        res.json({...user,token:req.token})
+
+    } catch (e) {
+        res.status(500).json(false)
+    }
+        
 })
 
 export default authRouter
