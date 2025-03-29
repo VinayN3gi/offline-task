@@ -55,7 +55,7 @@ authRouter.post("/signup",async(req :Request<{},{},SignUpBody>,res:Response)=>{
     }
     catch(e)
     {
-        res.status(500).json({error : e})
+        res.status(500).json({msg : e})
     }
 })
 
