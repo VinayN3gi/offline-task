@@ -4,7 +4,22 @@ import 'package:task_app/core/constants/constants.dart';
 import 'package:task_app/models/user.dart';
 
 class AuthRemoteRepository {
-  Future<void> login() async {}
+  Future<UserModel> login({required String email, required String password}) async {
+    try {
+      final res = await http.post(
+          Uri.parse('${Constants.backendUri}/auth/login'),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({'email': email, 'password': password}));
+
+      if (res.statusCode != 200) {
+        throw jsonDecode(res.body)['msg'];
+      }
+
+      return UserModel.fromMap(jsonDecode(res.body));
+    } catch (e) {
+      throw e.toString();
+    }
+  }
 
   Future<UserModel> signUp(
       {required String name,
@@ -14,11 +29,8 @@ class AuthRemoteRepository {
       final res = await http.post(
           Uri.parse('${Constants.backendUri}/auth/signup'),
           headers: {'Content-Type': 'application/json'},
-          body:jsonEncode({
-            'name':name,
-            'email':email,
-            'password':password
-          }));
+          body:
+              jsonEncode({'name': name, 'email': email, 'password': password}));
 
       if (res.statusCode != 201) {
         throw jsonDecode(res.body)['msg'];

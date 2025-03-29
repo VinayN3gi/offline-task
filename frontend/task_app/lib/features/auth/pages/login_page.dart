@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:task_app/features/auth/cubit/auth_cubit.dart';
 import 'package:task_app/features/utils/extensions.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,7 +15,6 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
-
   @override
   void dispose() {
     emailController.dispose();
@@ -21,39 +22,57 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void signIn()
-  {
-    if(formKey.currentState!.validate())
-    {
-
+  void signIn() {
+    if (formKey.currentState!.validate()) {
+      context.read<AuthCubit>().logIn(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim());
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Padding(
+        backgroundColor: Colors.white,
+        body: BlocConsumer<AuthCubit,AuthState>(
+        listener: (context, state) {
+        if(state is AuthError)
+        {
+           ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(state.error)));
+        }
+
+        else if(state is AuthUserLoggedIn)
+        {
+           ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(state.user.email)));
+        }
+      },
+      builder: (context, state) {
+        if(state is AuthLoading)
+        {
+          return Center(child: CircularProgressIndicator());
+        }
+        return Padding(
             padding: EdgeInsets.all(15),
             child: Form(
-              key:formKey,
+              key: formKey,
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text("Sign In",
-                        style:
-                            TextStyle(fontSize: 50, fontWeight: FontWeight.bold)),
-                    
-                    
+                        style: TextStyle(
+                            fontSize: 50, fontWeight: FontWeight.bold)),
+
                     SizedBox(height: 30),
-              
+
                     //Email field
                     TextFormField(
                       controller: emailController,
                       decoration: InputDecoration(hintText: 'Email'),
-                      validator: (value)
-                      {
-                        if(value == null || value.trim().isEmpty) {
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
                           return "Email field cannot be empty";
                         } else if (value.isValidEmail == false) {
                           return "Please enter a valid email address ";
@@ -61,15 +80,14 @@ class _LoginPageState extends State<LoginPage> {
                         return null;
                       },
                     ),
-              
-                    SizedBox(height: 15), 
-              
-                    //Password field  
+
+                    SizedBox(height: 15),
+
+                    //Password field
                     TextFormField(
                       controller: passwordController,
                       decoration: InputDecoration(hintText: 'Password'),
-                      validator: (value)
-                      {
+                      validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return "Password field cannot be null";
                         } else if (value.length <= 6) {
@@ -78,25 +96,32 @@ class _LoginPageState extends State<LoginPage> {
                         return null;
                       },
                     ),
-              
+
                     SizedBox(height: 20),
-              
+
                     //Login Button
-                    ElevatedButton(onPressed: signIn, child: const Text('SIGN IN',style: TextStyle(color: Colors.white,fontSize: 16),)),                   
-              
-                     SizedBox(height: 10),
-                        RichText(
+                    ElevatedButton(
+                        onPressed: signIn,
+                        child: const Text(
+                          'SIGN IN',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        )),
+
+                    SizedBox(height: 10),
+                    RichText(
                         text: TextSpan(
-                          text: "Don't have an account ? ",
-                          style: Theme.of(context).textTheme.titleMedium,
-                          children: [
-                        TextSpan(
-                            text: 'Sign Up',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                      ])) 
-                      ],
+                            text: "Don't have an account ? ",
+                            style: Theme.of(context).textTheme.titleMedium,
+                            children: [
+                          TextSpan(
+                              text: 'Sign Up',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                        ]))
+                  ],
                 ),
               ),
-            )));
+            ));
+      },
+    ));
   }
 }

@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
             elevatedButtonTheme: customButtonTheme,
             useMaterial3: true,
           ),
-          home: const SignupPage()),
+          home: const LoginPage()),
     );
   }
 }

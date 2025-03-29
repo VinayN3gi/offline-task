@@ -59,12 +59,12 @@ authRouter.post("/signup",async(req :Request<{},{},SignUpBody>,res:Response)=>{
     }
 })
 
-authRouter.get("/login",async (req:Request<{},{},LoginBody>,res:Response)=>{
+authRouter.post("/login",async (req:Request<{},{},LoginBody>,res:Response)=>{
 
     try{
         const {email,password} = req.body
         const [existingUser] = await db.select().from(users).where(eq(users.email,email))
-            
+  
         if(!existingUser)
         {
             res.status(400).send({msg:"The user does not exist"})
@@ -86,12 +86,12 @@ authRouter.get("/login",async (req:Request<{},{},LoginBody>,res:Response)=>{
         const token = jwt.sign({ id: existingUser.id }, process.env.JWT_SECRET);
 
 
-        res.json({token,...existingUser})
+        res.status(200).json({token,...existingUser})
         
     }
     catch(e)
     {
-        res.status(500).send({error:e})
+        res.status(500).send({msg:e})
     }
 
 })
