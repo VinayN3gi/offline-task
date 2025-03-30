@@ -122,7 +122,14 @@ class _SignupPageState extends State<SignupPage> {
                 SizedBox(height: 20),
                 ElevatedButton(
                     onPressed: signUp,
-                    child: const Text('SIGN UP',
+                    child:state is AuthLoading ? SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    ): const Text('SIGN UP',
                         style: TextStyle(fontSize: 16, color: Colors.white))),
 
                 //Bottom Text

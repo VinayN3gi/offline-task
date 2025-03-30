@@ -6,7 +6,9 @@ import 'package:task_app/theme/elevate_button_theme.dart';
 import 'package:task_app/theme/input_decoration_theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() {
+
+void main(){
+ 
   runApp(MultiBlocProvider(
     providers: [BlocProvider(create: (_) => AuthCubit())],
     child: const MyApp(),
@@ -26,7 +28,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    print("Hi");
     context.read<AuthCubit>().getUser();
   }
 

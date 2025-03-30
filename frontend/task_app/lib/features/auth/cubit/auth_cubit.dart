@@ -39,6 +39,7 @@ class AuthCubit extends Cubit<AuthState> {
         await spService.setToken(user.token);
       }
 
+
       emit(AuthUserLoggedIn(user));
     } catch (e) {
       emit(AuthError(e.toString()));
@@ -49,7 +50,6 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       emit(AuthLoading());
       final user = await authRemoteRepository.getUser();
-      print(user);
       if (user != null) {
         emit(AuthUserLoggedIn(user));
       } else {
