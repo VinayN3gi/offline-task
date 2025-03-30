@@ -75,6 +75,7 @@ class AuthRemoteRepository {
         throw jsonDecode(user.body)['msg'];
       }
 
+
       return UserModel.fromJson(user.body);
     } catch (e) {
       return null;

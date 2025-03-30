@@ -7,36 +7,47 @@ import 'package:task_app/theme/input_decoration_theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiBlocProvider(
+    providers: [BlocProvider(create: (_) => AuthCubit())],
+    child: const MyApp(),
+  ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
+
+  @override
+  void initState() {
+    super.initState();
+    print("Hi");
+    context.read<AuthCubit>().getUser();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [BlocProvider(create: (_) => AuthCubit())],
-      child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Task App',
-          theme: ThemeData(
-            inputDecorationTheme: customInputDecoration,
-            elevatedButtonTheme: customButtonTheme,
-            useMaterial3: true,
-          ),
-          home: BlocBuilder<AuthCubit, AuthState>(
-            builder: (context, state) {
-              if (state is AuthUserLoggedIn) {
-                return const HomePage();
-              }
-              else{
-                 return const SignupPage();
-              }
-             
-            },
-          )),
-    );
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Task App',
+        theme: ThemeData(
+          inputDecorationTheme: customInputDecoration,
+          elevatedButtonTheme: customButtonTheme,
+          useMaterial3: true,
+        ),
+        home: BlocBuilder<AuthCubit, AuthState>(
+          builder: (context, state) {
+            if (state is AuthUserLoggedIn) {
+              return const HomePage();
+            } else {
+              return const SignupPage();
+            }
+          },
+        ));
   }
 }
