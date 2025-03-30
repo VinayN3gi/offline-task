@@ -35,9 +35,9 @@ class AuthLocalRepository {
 
   Future<void> insertUser(UserModel usermodel) async {
     final db = await database;
-    final user = await db.insert(tableName, usermodel.toMap(),
+    await db.insert(tableName, usermodel.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
-    print(user);
+    
   }
 
   Future<UserModel?> getUser() async {

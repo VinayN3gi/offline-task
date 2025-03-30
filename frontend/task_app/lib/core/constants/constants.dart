@@ -1,3 +1,3 @@
 class Constants {
-  static String backendUri = "http://localhost:3000";
+  static String backendUri = "http://192.168.56.1:3000";
 }

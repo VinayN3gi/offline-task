@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
             if (state is AuthUserLoggedIn) {
               return const HomePage();
             } else {
-              return const SignupPage();
+              return const HomePage();
             }
           },
         ));
