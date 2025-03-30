@@ -156,7 +156,7 @@ authRouter.get("/",auth,async(req : AuthRequest,res:Response)=>{
         res.json({...user,token:req.token})
 
     } catch (e) {
-        res.status(500).json(false)
+        res.status(500).json({msg:e})
     }
         
 })
