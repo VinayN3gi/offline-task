@@ -1,9 +1,15 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:task_app/features/auth/cubit/auth_cubit.dart';
+import 'package:task_app/features/auth/pages/login_page.dart';
 import 'package:task_app/features/utils/extensions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignupPage extends StatefulWidget {
+  static MaterialPageRoute route() {
+    return MaterialPageRoute(builder: (context) => const SignupPage());
+  }
+
   const SignupPage({super.key});
 
   @override
@@ -37,15 +43,15 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         body: BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthError) {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text(state.error)));
-        }
-        else if (state is AuthSignUp) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text('SignUp was successfull please log in')));
+        } else if (state is AuthSignUp) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('SignUp was successfull please log in')));
         }
       },
       builder: (context, state) {
@@ -128,7 +134,12 @@ class _SignupPageState extends State<SignupPage> {
                         children: [
                       TextSpan(
                           text: 'Sign In',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.pushAndRemoveUntil(
+                                  context, LoginPage.route(), (_) => false);
+                            }),
                     ]))
               ],
             ),

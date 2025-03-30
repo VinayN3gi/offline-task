@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_app/features/auth/cubit/auth_cubit.dart';
 import 'package:task_app/features/auth/pages/signup_page.dart';
+import 'package:task_app/features/home/pages/home.dart';
 import 'package:task_app/theme/elevate_button_theme.dart';
 import 'package:task_app/theme/input_decoration_theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,9 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-     providers: [
-      BlocProvider(create: (_)=>AuthCubit())
-     ],
+      providers: [BlocProvider(create: (_) => AuthCubit())],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Task App',
@@ -27,7 +26,17 @@ class MyApp extends StatelessWidget {
             elevatedButtonTheme: customButtonTheme,
             useMaterial3: true,
           ),
-          home: const SignupPage()),
+          home: BlocBuilder<AuthCubit, AuthState>(
+            builder: (context, state) {
+              if (state is AuthUserLoggedIn) {
+                return const HomePage();
+              }
+              else{
+                 return const SignupPage();
+              }
+             
+            },
+          )),
     );
   }
 }

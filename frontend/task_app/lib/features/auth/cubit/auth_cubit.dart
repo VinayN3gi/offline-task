@@ -34,15 +34,25 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthLoading());
       final user =
           await authRemoteRepository.login(email: email, password: password);
-     
 
-      if(user.token.isNotEmpty)
-      {
+      if (user.token.isNotEmpty) {
         await spService.setToken(user.token);
       }
 
-       emit(AuthUserLoggedIn(user));
-    
+      emit(AuthUserLoggedIn(user));
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
+
+  void getUser() async {
+    try {
+      emit(AuthLoading());
+      final user = await authRemoteRepository.getUser();
+      if (user != null) {
+        emit(AuthUserLoggedIn(user));
+      }
+      emit(AuthUserIntial());
     } catch (e) {
       emit(AuthError(e.toString()));
     }
