@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:task_app/features/auth/cubit/auth_cubit.dart';
-import 'package:task_app/features/auth/pages/signup_page.dart';
 import 'package:task_app/features/home/pages/home.dart';
 import 'package:task_app/theme/elevate_button_theme.dart';
 import 'package:task_app/theme/input_decoration_theme.dart';

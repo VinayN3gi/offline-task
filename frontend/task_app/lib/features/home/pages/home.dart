@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:task_app/features/utils/strenghten_color.dart';
+import 'package:task_app/widgets/date_selector.dart';
 import 'package:task_app/widgets/task_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -32,6 +33,7 @@ class _HomePageState extends State<HomePage> {
         child:Column(
           children: [
             //date selector
+            DateSelector(),
 
             //Task cards
             Row(
