@@ -64,7 +64,7 @@ class TaskModel {
       description: map['description'] ?? '',
       hexColor: map['hexColor'] ?? '',
       uid: map['uid'] ?? '',
-      dueAt: DateTime.fromMillisecondsSinceEpoch(map['dueAt'] as int),
+      dueAt: DateTime.parse(map['dueAt']),
       createdAt: DateTime.parse(map['createdAt']),
       updatedAt: DateTime.parse(map['updatedAt']),
     );

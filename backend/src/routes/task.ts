@@ -13,14 +13,16 @@ const taskRouter=Router();
 
 taskRouter.post("/",auth,async (req : AuthRequest,res)=>{
     try {
-        req.body={...req.body,dueAt: new Date(req.body.due_at),uid:req.user!}
+        req.body={...req.body,dueAt:new Date(req.body.dueAt),uid:req.user!}
         const newTask:newTask=req.body;
 
         const [task]=await db.insert(tasks).values(newTask).returning();
-        
+        console.log(task)
+
         res.status(201).json(task);
         
     } catch (error) {
+        console.log(error)
         res.status(500).json({msg:error})
     }
     

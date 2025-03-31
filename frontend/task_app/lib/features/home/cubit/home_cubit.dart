@@ -14,7 +14,7 @@ class HomeCubit extends Cubit<HomeState> {
   final taskRemoteRepository = TaskRemoteRepository();
   final spServices = SpService();
 
-  void getTask({
+  void createTask({
     required String title,
     required String description,
     required Color color,
@@ -22,11 +22,14 @@ class HomeCubit extends Cubit<HomeState> {
   }) async {
     try {
       emit(HomeLoading());
-
+      print("after home loading");
       String? token = await spServices.getToken();
 
-       token ??="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyOWNkYWZjLWQ0MWEtNDQzZC05NjdmLTgzNzU3MDMxZGZlNSIsImlhdCI6MTc0MzM5OTYyM30.DVxIDfBKMmFkGLApjDQ_31LjKTQhaLSIulO8uY0klZI";
+      token ??=
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyOWNkYWZjLWQ0MWEtNDQzZC05NjdmLTgzNzU3MDMxZGZlNSIsImlhdCI6MTc0MzM5OTYyM30.DVxIDfBKMmFkGLApjDQ_31LjKTQhaLSIulO8uY0klZI";
 
+      print(token);
+      
       final taskModel = await taskRemoteRepository.createTask(
           title: title,
           description: description,
@@ -34,6 +37,7 @@ class HomeCubit extends Cubit<HomeState> {
           dueAt: dueAt,
           token: token);
 
+      print(taskModel);
       emit(HomeSuccess(taskModel));
     } catch (error) {
       emit(HomeError(error.toString()));

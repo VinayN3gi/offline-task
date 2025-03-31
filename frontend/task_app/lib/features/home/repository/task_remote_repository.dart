@@ -13,23 +13,20 @@ class TaskRemoteRepository {
     required String token,
   }) async {
     try {
-      final task =
-          await http.post(Uri.parse("${Constants.backendUri}/tasks"), headers: {
-        'Content-Type': 'application/json',
-        'x-auth-token': token
-      }, body: {
-        jsonEncode({
-          'title': title,
-          'description': description,
-          'hexColor': hexColor,
-          'dueAt': dueAt.toIso8601String(),
-        })
-      });
+      final task = await http.post(Uri.parse("${Constants.backendUri}/task"),
+          headers: {'Content-Type': 'application/json', 'x-auth-token': token},
+          body: jsonEncode({
+            'title': title,
+            'description': description,
+            'hexColor': hexColor,
+            'dueAt': dueAt.toIso8601String(),
+          }));
 
       if (task.statusCode != 201) {
         throw jsonDecode(task.body)['msg'];
       }
 
+    
       return TaskModel.fromJson(task.body);
     } catch (error) {
       throw error.toString();
