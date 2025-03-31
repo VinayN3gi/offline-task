@@ -49,12 +49,15 @@ class AuthRemoteRepository {
 
   Future<UserModel?> getUser() async {
     try {
-      final token = await spService.getToken();
+      String? token = await spService.getToken();
 
-      //Token was not found
-      if (token == null) {
+      //Token was not found then replace with a placeholder for testing
+      token ??="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyOWNkYWZjLWQ0MWEtNDQzZC05NjdmLTgzNzU3MDMxZGZlNSIsImlhdCI6MTc0MzM5OTYyM30.DVxIDfBKMmFkGLApjDQ_31LjKTQhaLSIulO8uY0klZI";
+
+      
+      /*if (token == null) {
         return null;
-      }
+      }*/
 
       //Checking if the token is valid or not
       final userResponse = await http.post(

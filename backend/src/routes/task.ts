@@ -13,7 +13,7 @@ const taskRouter=Router();
 
 taskRouter.post("/",auth,async (req : AuthRequest,res)=>{
     try {
-        req.body={...req.body,uid:req.user!}
+        req.body={...req.body,dueAt: new Date(req.body.due_at),uid:req.user!}
         const newTask:newTask=req.body;
 
         const [task]=await db.insert(tasks).values(newTask).returning();
