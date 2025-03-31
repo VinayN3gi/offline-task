@@ -12,6 +12,7 @@ class DateSelector extends StatefulWidget {
 
 class _DateSelectorState extends State<DateSelector> {
   int weekOffset = 0;
+  DateTime selectedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -57,11 +58,15 @@ class _DateSelectorState extends State<DateSelector> {
                 itemCount: weekDates.length,
                 itemBuilder: (context, index) {
                   final date = weekDates[index];
+                  bool isSelected = DateFormat('d').format(selectedDate) ==
+                      DateFormat('d').format(date) && selectedDate.month==date.month && selectedDate.year==selectedDate.year;
+
                   return Container(
                       decoration: BoxDecoration(
+                        color: isSelected ? Colors.deepOrangeAccent : Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                              color: Colors.grey.shade300, width: 2)),
+                              color:isSelected ? Colors.deepOrangeAccent :  Colors.grey.shade300, width: 2)),
                       width: 70,
                       margin: EdgeInsets.only(right: 8),
                       child: Column(
@@ -69,11 +74,11 @@ class _DateSelectorState extends State<DateSelector> {
                         children: [
                           Text(DateFormat("d").format(date),
                               style: TextStyle(
-                                  fontSize: 22, fontWeight: FontWeight.bold)),
+                                  fontSize: 22, fontWeight: FontWeight.bold,color: isSelected ? Colors.white : Colors.black)),
                           SizedBox(height: 5),
                           Text(DateFormat("E").format(date),
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold))
+                                  fontSize: 16, fontWeight: FontWeight.bold,color: isSelected ? Colors.white : Colors.black))
                         ],
                       ));
                 }),
