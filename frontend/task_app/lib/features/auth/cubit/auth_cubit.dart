@@ -35,7 +35,7 @@ class AuthCubit extends Cubit<AuthState> {
       final user =
           await authRemoteRepository.login(email: email, password: password);
 
-      print('Logging user token ${user.token}');
+
 
       if (user.token.isNotEmpty) {
         await spService.setToken(user.token);

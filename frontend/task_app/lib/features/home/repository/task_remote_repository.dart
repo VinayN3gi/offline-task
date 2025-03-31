@@ -5,7 +5,7 @@ import 'package:task_app/core/constants/constants.dart';
 import 'package:task_app/models/task.dart';
 
 class TaskRemoteRepository {
-  Future<TaskModel> createTak({
+  Future<TaskModel> createTask({
     required String title,
     required String description,
     required String hexColor,

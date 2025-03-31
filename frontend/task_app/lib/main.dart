@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_app/features/auth/cubit/auth_cubit.dart';
 import 'package:task_app/features/auth/pages/signup_page.dart';
+import 'package:task_app/features/home/cubit/home_cubit.dart';
 import 'package:task_app/features/home/pages/home.dart';
 import 'package:task_app/theme/elevate_button_theme.dart';
 import 'package:task_app/theme/input_decoration_theme.dart';
@@ -10,7 +11,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 void main(){
  
   runApp(MultiBlocProvider(
-    providers: [BlocProvider(create: (_) => AuthCubit())],
+    providers: [
+      BlocProvider(create: (_) => AuthCubit()),
+      BlocProvider(create: (_)=>HomeCubit())
+      ],
     child: const MyApp(),
   ));
 }
