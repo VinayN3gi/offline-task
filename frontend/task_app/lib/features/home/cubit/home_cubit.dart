@@ -22,14 +22,11 @@ class HomeCubit extends Cubit<HomeState> {
   }) async {
     try {
       emit(HomeLoading());
-      print("after home loading");
       String? token = await spServices.getToken();
 
       token ??=
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyOWNkYWZjLWQ0MWEtNDQzZC05NjdmLTgzNzU3MDMxZGZlNSIsImlhdCI6MTc0MzM5OTYyM30.DVxIDfBKMmFkGLApjDQ_31LjKTQhaLSIulO8uY0klZI";
 
-      print(token);
-      
       final taskModel = await taskRemoteRepository.createTask(
           title: title,
           description: description,
@@ -37,8 +34,24 @@ class HomeCubit extends Cubit<HomeState> {
           dueAt: dueAt,
           token: token);
 
-      print(taskModel);
       emit(HomeSuccess(taskModel));
+    } catch (error) {
+      emit(HomeError(error.toString()));
+    }
+  }
+
+
+  void getTasks() async {
+    try {
+      emit(HomeLoading());
+      String? token = await spServices.getToken();
+
+      token ??=
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAyOWNkYWZjLWQ0MWEtNDQzZC05NjdmLTgzNzU3MDMxZGZlNSIsImlhdCI6MTc0MzM5OTYyM30.DVxIDfBKMmFkGLApjDQ_31LjKTQhaLSIulO8uY0klZI";
+
+      List<TaskModel> list = await taskRemoteRepository.getTasks(token: token);
+      //print(list);
+      emit(HomeGetTask(list));
     } catch (error) {
       emit(HomeError(error.toString()));
     }

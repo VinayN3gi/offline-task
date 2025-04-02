@@ -17,7 +17,7 @@ taskRouter.post("/",auth,async (req : AuthRequest,res)=>{
         const newTask:newTask=req.body;
 
         const [task]=await db.insert(tasks).values(newTask).returning();
-        console.log(task)
+
 
         res.status(201).json(task);
         

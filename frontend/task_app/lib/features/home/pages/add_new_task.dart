@@ -49,14 +49,14 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
         actions: [
           GestureDetector(
               onTap: () async {
-                final _selectedDate = await showDatePicker(
+                var selectedDate = await showDatePicker(
                     context: context,
                     firstDate: DateTime.now(),
                     lastDate: DateTime.now().add(const Duration(days: 90)));
 
-                if (_selectedDate != null) {
+                if (selectedDate != null) {
                   setState(() {
-                    selectedDate = _selectedDate;
+                    selectedDate = selectedDate;
                   });
                 }
               },

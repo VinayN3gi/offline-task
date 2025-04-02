@@ -16,5 +16,9 @@ final class HomeSuccess extends HomeState {
   const HomeSuccess(this.taskModel);
 }
 
+final class HomeLoading extends HomeState {}
 
-final class HomeLoading extends HomeState{}
+final class HomeGetTask extends HomeState {
+  final List<TaskModel> tasks;
+  const HomeGetTask(this.tasks);
+}
