@@ -1,3 +1,6 @@
+// ignore: file_names
+// ignore_for_file: file_names, duplicate_ignore
+
 List<DateTime> generateWeekDates(int weekOffSet) {
   final toady = DateTime.now();
   DateTime startOfWeek = toady.subtract(Duration(days: toady.weekday - 1));

@@ -21,6 +21,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  DateTime selectedDate = DateTime.now();
+
   @override
   void initState() {
     super.initState();
@@ -60,12 +62,25 @@ class _HomePageState extends State<HomePage> {
           } else if (state is HomeError) {
             return Center(child: Text(state.error));
           } else if (state is HomeGetTask) {
-            final tasks = state.tasks;
+            final tasks = state.tasks
+                .where((elem) =>
+                    DateFormat('d').format(elem.dueAt) ==
+                        DateFormat('d').format(selectedDate) &&
+                    elem.dueAt.month == selectedDate.month &&
+                    elem.dueAt.year == selectedDate.year)
+                .toList();
             return Padding(
               padding: const EdgeInsets.all(5),
               child: Column(
                 children: [
-                  DateSelector(),
+                  DateSelector(
+                    selectedDate: selectedDate,
+                    onTap: (date) {
+                      setState(() {
+                        selectedDate = date;
+                      });
+                    },
+                  ),
 
                   // Task list
                   Expanded(
@@ -91,7 +106,7 @@ class _HomePageState extends State<HomePage> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: strenghtenColor(
-                                  const Color.fromRGBO(246, 222, 194, 1),
+                                  hexTorgb(currTask.hexColor),
                                   0.69,
                                 ),
                               ),
@@ -101,7 +116,7 @@ class _HomePageState extends State<HomePage> {
                             Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: Text(
-                                DateFormat("MM-d-y").format(currTask.dueAt),
+                                DateFormat("hh:mm a").format(currTask.dueAt),
                                 style: const TextStyle(fontSize: 17),
                               ),
                             ),

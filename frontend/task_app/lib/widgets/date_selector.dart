@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:task_app/features/utils/generateWeekDay.dart';
 
+// ignore: must_be_immutable
 class DateSelector extends StatefulWidget {
-  const DateSelector({super.key});
+  final DateTime selectedDate;
+  final Function(DateTime) onTap;
+  const DateSelector({super.key, required this.selectedDate,required this.onTap});
 
   @override
   State<DateSelector> createState() => _DateSelectorState();
@@ -11,7 +14,7 @@ class DateSelector extends StatefulWidget {
 
 class _DateSelectorState extends State<DateSelector> {
   int weekOffset = 0;
-  DateTime selectedDate = DateTime.now();
+  //DateTime selectedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -57,17 +60,14 @@ class _DateSelectorState extends State<DateSelector> {
                 itemCount: weekDates.length,
                 itemBuilder: (context, index) {
                   final date = weekDates[index];
-                  bool isSelected = DateFormat('d').format(selectedDate) ==
-                          DateFormat('d').format(date) &&
-                      selectedDate.month == date.month &&
-                      selectedDate.year == selectedDate.year;
+                  bool isSelected =
+                      DateFormat('d').format(widget.selectedDate) ==
+                              DateFormat('d').format(date) &&
+                          widget.selectedDate.month == date.month &&
+                          widget.selectedDate.year == widget.selectedDate.year;
 
                   return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedDate = date;
-                      });
-                    },
+                    onTap:()=>widget.onTap(date),
                     child: Container(
                         decoration: BoxDecoration(
                             color: isSelected
