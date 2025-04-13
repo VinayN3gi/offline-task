@@ -59,8 +59,8 @@ Before starting, make sure you have the following installed on your machine:
 1. Clone the repository to your local machine:
    
    ```bash
-   git clone https://github.com/your-username/task-management-app.git
-   cd task-management-app```
+   git clone https://github.com/VinayN3gi/offline-task.git
+   cd offline-task```
 
 2. Set up your environment variables:
    Create a .env.local file in the root of the project and add the following content:
