@@ -60,14 +60,14 @@ Before starting, make sure you have the following installed on your machine:
    
    ```bash
    git clone https://github.com/VinayN3gi/offline-task.git
-   cd offline-task```
+   cd offline-task
 
 2. Set up your environment variables:
    Create a .env.local file in the root of the project and add the following content:
    ```env
    PORT=5000  # Change this to the desired port
    CONNECTION_STRING=postgres://user:password@localhost:5432/taskdb  # Adjust for your PostgreSQL setup
-   JWT_SECRET=your-jwt-secret  # Secret key for JWT signing```
+   JWT_SECRET=your-jwt-secret  # Secret key for JWT signing
 
 ### Backend Setup(Node.js)
 1. Navigate to the backend/ directory:
